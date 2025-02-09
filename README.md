@@ -1,7 +1,7 @@
 # RStatus
 
 <div align="center">
-    <img width="100px" src="./Client/icon.ico" align="center" alt="RStatus" />
+    <img width="100px" src="./Client/Icon.png" align="center" alt="RStatus" />
     <h2 align="center">RStatus</h2>
     <p align="center">一套适用于站长的活动公开系统。</p>
 </div>
@@ -32,6 +32,11 @@
 - 技术栈：`Python`、`易语言`
 - 关键词：`B/S`、`C/S`、`监控`
 - 支持的操作系统：WindowsXP以上（**客户端**）、Windows7以上（**服务器端**）
+> [!WARNING]
+> 服务器端已测试环境为：
+> - Windows Server 2016
+> - IIS10.0
+> 其它环境暂未测试，可用性未知。
 
 ## 声明
 > [!NOTE]
