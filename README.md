@@ -1,7 +1,7 @@
 # RStatus
 
 <div align="center">
-    <img width="100px" src="https://www.riseforever.cn/wp-content/uploads/2025/02/8efdcd53fb882bdd2c4d7702939a0b9e.webp" align="center" alt="RStatus" />
+    <img width="100px" src="./Client/Icon.png" align="center" alt="RStatus" />
     <h2 align="center">RStatus</h2>
     <p align="center">一套适用于站长的活动公开系统。</p>
 </div>
