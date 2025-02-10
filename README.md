@@ -85,7 +85,7 @@
 
 ## 文档
 
-[文档](https://gytxtx.github.io/Docs/#/docs/KFACBT_Toolkit/)
+前往[文档](https://www.rsvsoft.cn/docs/rstatus/)页以查看部署教程及其它内容。
 
 ## 协议
 
