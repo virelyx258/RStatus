@@ -1,13 +1,17 @@
 {
-    "站长头像地址": "",
-    "站长昵称": "请更改站长昵称",
-    "TCP服务器端口": 8080,
-    "Flask服务器端口": 5000,
-    "背景图片地址": "",
-    "站点标题": "请更改站点标题",
-    "页面标题": "请您更改Config.json中的页面标题",
-    "在线中状态文本": "在线",
-    "下线了状态文本": "离线",
-    "在线时的状态文本": "欢迎交流，随时在线！",
-    "离线时的状态文本": "暂时离线，稍后回来。"
+    "avatar_url": "https://example.com/avatar.jpg",
+    "nick_name": "Custom Nickname",
+    "tcp_port": 19198,
+    "flask_port": 5000,
+    "background_image": "https://example.com/bg.jpg",
+    "site_title": "Custom Site Title",
+    "page_title": "Custom Page Title",
+    "online_status": "Online",
+    "offline_status": "Offline",
+    "online_text": "Currently online, feel free to contact.",
+    "offline_text": "Currently offline, please leave a message.",
+    "favicon_url": "https://example.com/favicon.ico",
+    "custom_css": ".custom-class { color: red; }",
+    "custom_javascript": "console.log('Custom Javascript loaded');",
+    "custom_footer_html": ""
 }

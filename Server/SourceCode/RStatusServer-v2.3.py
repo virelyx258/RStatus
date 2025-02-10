@@ -1,66 +1,63 @@
 #!/usr/bin/env python3
-import json
 from flask import Flask, render_template_string, jsonify
 from flask_cors import CORS
 import socket
 import threading
 import logging
+import json
 import os
 
 # 配置日志记录
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
+# 默认配置
+DEFAULT_CONFIG = {
+    "avatar_url": "https://cravatar.cn/avatar/302380667bdaf4e1390800e62494d4af?s=400&d=mp",
+    "nick_name": "Riseforever",
+    "tcp_port": 19198,
+    "flask_port": 5000,
+    "background_image": "https://www.riseforever.cn/wp-content/uploads/2025/01/6a22be2e4b3d370c76774ddaa58c0893.webp",
+    "site_title": "Rsvの状态",
+    "page_title": "捕捉Riseforever",
+    "online_status": "在线中",
+    "offline_status": "下线了",
+    "online_text": "目前在线，可以交流。",
+    "offline_text": "目前离线，有事请留言。",
+    "favicon_url": "https://www.riseforever.cn/wp-content/uploads/2024/12/65a799ce09060f728193a3146c6d0f15.webp",
+    "custom_css": "",  # 默认值为空
+    "custom_javascript": "",  # 默认值为空
+    "custom_footer_html": ""  # 默认值为空
+}
+
+# 尝试加载配置文件
+config = DEFAULT_CONFIG.copy()
+try:
+    config_path = os.path.join(os.path.dirname(__file__), 'Config.json')
+    with open(config_path, 'r', encoding='utf-8') as config_file:
+        user_config = json.load(config_file)
+        config.update(user_config)
+except Exception as e:
+    logging.warning(f"加载配置文件失败，使用默认配置: {str(e)}")
+
 app = Flask(__name__)
-CORS(app)  # 启用 CORS
+CORS(app)
 
 # 存储设备信息
 devices = {}
-# 创建线程锁
 lock = threading.Lock()
 
-# 读取配置文件
-def read_config():
-    """读取配置文件 Config.json"""
-    try:
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        config_path = os.path.join(current_dir, 'Config.json')
-        with open(config_path, 'r', encoding='utf-8') as f:
-            config = json.load(f)
-        return config
-    except FileNotFoundError:
-        logging.error("Config.json 文件未找到，请检查文件路径。")
-        return {}
-    except json.JSONDecodeError:
-        logging.error("Config.json 文件格式错误，请检查文件内容。")
-        return {}
-
-config = read_config()
-# 获取配置信息
-avatar_url = config.get('站长头像地址', '')
-nickname = config.get('站长昵称', '请更改站长昵称')
-tcp_port = config.get('TCP服务器端口', 19198)
-flask_port = config.get('Flask服务器端口', 5000)
-background_image_url = config.get('背景图片地址', '')
-site_title = config.get('站点标题', '请更改站点标题')
-page_title = config.get('页面标题', '请在服务器目录下Config.json更改页面标题')
-online_text = config.get('在线中状态文本', '在线中')
-offline_text = config.get('下线了状态文本', '下线了')
-online_status_text = config.get('在线时的状态文本', '目前在线，可以交流。')
-offline_status_text = config.get('离线时的状态文本', '目前离线，有事请留言。')
-
-# HTML模板,包含现代化CSS样式和动效以及最新更新时间
+# HTML模板
 HTML_TEMPLATE = f'''
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title>{site_title}</title>
+    <title>{config['site_title']}</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 添加viewport元标签以适配手机端 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {{
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: url('{background_image_url}') center/cover no-repeat;
+            background: url('{config['background_image']}') center/cover no-repeat;
             margin: 0;
             padding: 20px;
             min-height: calc(100vh - 40px);
@@ -304,41 +301,38 @@ HTML_TEMPLATE = f'''
                 text-align: center;
             }}
         }}
+		{config['custom_css']}
     </style>
-    <link rel="icon" type="image/webp" href="https://www.riseforever.cn/wp-content/uploads/2024/12/65a799ce09060f728193a3146c6d0f15.webp">
+    </style>
+    <link rel="icon" type="image/webp" href="{config['favicon_url']}">
 </head>
-
 <body>
     <div class="container">
-        <h1>{page_title}</h1>
+        <h1>{config['page_title']}</h1>
         <div class="info-module">
             <div class="avatar-nickname">
-                <img class="avatar" src="{avatar_url}" alt="Avatar">
+                <img class="avatar" src="{config['avatar_url']}" alt="Avatar">
                 <div class="nickname-container">
-                    <span class="nickname">{nickname}</span>
-                    <span class="sub-title" id="sub-title">{offline_status_text}</span> <!-- 添加副标题 -->
+                    <span class="nickname">{config['nick_name']}</span>
+                    <span class="sub-title" id="sub-title">{config['offline_text']}</span>
                 </div>
             </div>
             <div id="status-indicator" class="status-offline">
                 <div class="status-dot status-dot-offline"></div>
-                {offline_text}
+                {config['offline_status']}
             </div>
         </div>
-        <div id="device-container">
-            <!-- 设备模块将动态添加到这里 -->
-        </div>
+        <div id="device-container"></div>
         <div id="update-time">更新时间：暂无</div>
     </div>
-    <div class="copyright-container">
+    <div class="copyright-container">{config['custom_footer_html']}
         Copyright © 2025 <a href="https://github.com/Rise-forever/RStatus/" target="_blank">RStatus</a> Made By <a href="https://www.riseforever.cn/" target="_blank">Riseforever</a>.
     </div>
 <script>
     function updateDevices() {{
         fetch('/get_devices')
            .then(response => {{
-                if (!response.ok) {{
-                    throw new Error('Network response was not ok');
-                }}
+                if (!response.ok) throw new Error('Network error');
                 return response.json();
             }})
            .then(data => {{
@@ -347,89 +341,104 @@ HTML_TEMPLATE = f'''
                 for (const [deviceName, windowTitle] of Object.entries(data)) {{
                     const module = document.createElement('div');
                     module.classList.add('info-module');
-                    module.innerHTML = `
-                        <span class="left-label">${{deviceName}}</span>
-                        <span class="right-content" onclick="showFullContent(this)" data-full-content="${{windowTitle}}">${{windowTitle.length > 20 ? windowTitle.substring(0, 20) + '...' : windowTitle}}</span>
-                    `;
+                    module.innerHTML = `<span class="left-label">${{deviceName}}</span>
+                        <span class="right-content" onclick="showFullContent(this)" 
+                            data-full-content="${{windowTitle}}">${{windowTitle.length > 20 ? windowTitle.substring(0,20)+'...' : windowTitle}}</span>`;
                     deviceContainer.appendChild(module);
                 }}
-                // 获取当前时间并格式化为年月日时分秒
-                const now = new Date();
-                const year = now.getFullYear();
-                const month = String(now.getMonth() + 1).padStart(2, '0');
-                const day = String(now.getDate()).padStart(2, '0');
-                const hours = String(now.getHours()).padStart(2, '0');
-                const minutes = String(now.getMinutes()).padStart(2, '0');
-                const seconds = String(now.getSeconds()).padStart(2, '0');
-                const updateTime = `${{year}}-${{month}}-${{day}} ${{hours}}:${{minutes}}:${{seconds}}`;
-                document.getElementById('update-time').innerText = `更新时间：${{updateTime}}`;
 
-                // 更新在线状态
+                // 更新时间处理
+                const now = new Date();
+                document.getElementById('update-time').innerText = `更新时间：${{now.toLocaleString('zh-CN')}}`;
+
+                // 状态更新逻辑
                 const statusIndicator = document.getElementById('status-indicator');
                 const statusDot = document.querySelector('.status-dot');
                 const subTitle = document.getElementById('sub-title');
                 if (Object.keys(data).length > 0) {{
-                    statusIndicator.classList.remove('status-offline');
-                    statusIndicator.classList.add('status-alive');
-                    statusDot.classList.remove('status-dot-offline');
-                    statusDot.classList.add('status-dot-alive');
-                    statusIndicator.innerHTML = '<div class="status-dot status-dot-alive"></div>{online_text}';
-                    subTitle.innerText = '{online_status_text}';
+                    statusIndicator.className = 'status-indicator status-alive';
+                    statusDot.className = 'status-dot status-dot-alive';
+                    statusIndicator.innerHTML = `<div class="status-dot status-dot-alive"></div>{config['online_status']}`;
+                    subTitle.innerText = '{config['online_text']}';
                 }} else {{
-                    statusIndicator.classList.remove('status-alive');
-                    statusIndicator.classList.add('status-offline');
-                    statusDot.classList.remove('status-dot-alive');
-                    statusDot.classList.add('status-dot-offline');
-                    statusIndicator.innerHTML = '<div class="status-dot status-dot-offline"></div>{offline_text}';
-                    subTitle.innerText = '{offline_status_text}';
+                    statusIndicator.className = 'status-indicator status-offline';
+                    statusDot.className = 'status-dot status-dot-offline';
+                    statusIndicator.innerHTML = `<div class="status-dot status-dot-offline"></div>{config['offline_status']}`;
+                    subTitle.innerText = '{config['offline_text']}';
                 }}
             }})
            .catch(error => {{
-                console.error('Error updating devices:', error);
-                // 如果发生错误，确保状态显示为离线
-                const statusIndicator = document.getElementById('status-indicator');
-                const statusDot = document.querySelector('.status-dot');
-                const subTitle = document.getElementById('sub-title');
-                statusIndicator.classList.remove('status-alive');
-                statusIndicator.classList.add('status-offline');
-                statusDot.classList.remove('status-dot-alive');
-                statusDot.classList.add('status-dot-offline');
-                statusIndicator.innerHTML = '<div class="status-dot status-dot-offline"></div>{offline_text}';
-                subTitle.innerText = '{offline_status_text}';
+                console.error('Error:', error);
+                document.getElementById('status-indicator').innerHTML = `<div class="status-dot status-dot-offline"></div>{config['offline_status']}`;
+                document.getElementById('sub-title').innerText = '{config['offline_text']}';
             }});
     }}
 
     function showFullContent(element) {{
-        const fullContent = element.dataset.fullContent;
-        alert(`${{fullContent}}`);
+        alert(element.dataset.fullContent);
     }}
 
-    // 每3秒更新一次
     setInterval(updateDevices, 3000);
-    updateDevices();  // 立即执行一次
+    updateDevices();
+	// 自定义Javascript
+	{config['custom_javascript']}
 </script>
 </body>
 </html>
 '''
 
-
 def handle_tcp_connection():
-    """处理 TCP 连接，接收特定格式的消息并更新全局变量"""
-    pass  # function body is omitted
-
+    global devices
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.bind(('0.0.0.0', config['tcp_port']))
+    server_socket.listen(1)
+    logging.info(f'TCP服务启动于端口 {config["tcp_port"]}')
+    
+    while True:
+        conn, addr = server_socket.accept()
+        logging.info(f'新连接: {addr}')
+        try:
+            while True:
+                data = conn.recv(1024).decode('utf-8')
+                if not data: break
+                logging.info(f"收到数据: {data}")
+                
+                if data.startswith('NewForm{}'):
+                    parts = data.split('{}')
+                    if len(parts) == 4:
+                        device_type, device_name, window_title = parts[1], parts[2], parts[3]
+                        
+                        if window_title == "设备已下线":
+                            with lock:
+                                for key in [k for k in devices if device_name in k]:
+                                    del devices[key]
+                            continue
+                            
+                        emoji = '📱' if device_type == '1' else '💻' if device_type == '2' else None
+                        if not emoji: continue
+                            
+                        display_name = f'{emoji}{device_name}'
+                        with lock:
+                            # 处理设备名称冲突
+                            existing = next((k for k in devices if device_name in k), None)
+                            if existing and existing[0] != emoji:
+                                devices[display_name] = devices.pop(existing)
+                            devices[display_name] = window_title
+        except Exception as e:
+            logging.error(f'连接处理错误: {str(e)}')
+        finally:
+            conn.close()
 
 @app.route('/')
 def home():
-    """主页路由"""
-    return HTML_TEMPLATE
-
+    return render_template_string(HTML_TEMPLATE)
 
 @app.route('/get_devices')
 def get_devices():
-    """返回所有设备信息的 API"""
-    pass  # function body is omitted
-
+    with lock:
+        return jsonify(devices)
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO)
-    app.run(port=flask_port)
+    tcp_thread = threading.Thread(target=handle_tcp_connection, daemon=True)
+    tcp_thread.start()
+    app.run(host='0.0.0.0', port=config['flask_port'], debug=False)
