@@ -12,21 +12,21 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 # 默认配置
 DEFAULT_CONFIG = {
-    "avatar_url": "https://cravatar.cn/avatar/302380667bdaf4e1390800e62494d4af?s=400&d=mp",
-    "nick_name": "Riseforever",
-    "tcp_port": 19198,
+    "avatar_url": "https://example.com/avatar.jpg",
+    "nick_name": "Custom Nickname",
+    "tcp_port": 8080,
     "flask_port": 5000,
-    "background_image": "https://www.riseforever.cn/wp-content/uploads/2025/01/6a22be2e4b3d370c76774ddaa58c0893.webp",
-    "site_title": "Rsvの状态",
-    "page_title": "捕捉Riseforever",
-    "online_status": "在线中",
-    "offline_status": "下线了",
-    "online_text": "目前在线，可以交流。",
-    "offline_text": "目前离线，有事请留言。",
-    "favicon_url": "https://www.riseforever.cn/wp-content/uploads/2024/12/65a799ce09060f728193a3146c6d0f15.webp",
-    "custom_css": "",  # 默认值为空
-    "custom_javascript": "",  # 默认值为空
-    "custom_footer_html": ""  # 默认值为空
+    "background_image": "https://example.com/bg.jpg",
+    "site_title": "Custom Site Title",
+    "page_title": "Custom Page Title",
+    "online_status": "Online",
+    "offline_status": "Offline",
+    "online_text": "Currently online, feel free to contact.",
+    "offline_text": "Currently offline, please leave a message.",
+    "favicon_url": "https://example.com/favicon.ico",
+    "custom_css_file": "",
+    "custom_javascript_file": "",
+    "custom_html_file": ""
 }
 
 # 尝试加载配置文件
@@ -39,6 +39,36 @@ try:
 except Exception as e:
     logging.warning(f"加载配置文件失败，使用默认配置: {str(e)}")
 
+# 加载自定义CSS
+def load_custom_css(file_name):
+    try:
+        css_path = os.path.join(os.path.dirname(__file__), file_name)
+        with open(css_path, 'r', encoding='utf-8') as css_file:
+            return css_file.read()
+    except Exception as e:
+        logging.warning(f"加载自定义CSS文件失败: {str(e)}")
+        return ""
+
+# 加载自定义JavaScript
+def load_custom_javascript(file_name):
+    try:
+        js_path = os.path.join(os.path.dirname(__file__), file_name)
+        with open(js_path, 'r', encoding='utf-8') as js_file:
+            return js_file.read()
+    except Exception as e:
+        logging.warning(f"加载自定义JavaScript文件失败: {str(e)}")
+        return ""
+
+# 加载自定义HTML
+def load_custom_html(file_name):
+    try:
+        html_path = os.path.join(os.path.dirname(__file__), file_name)
+        with open(html_path, 'r', encoding='utf-8') as html_file:
+            return html_file.read()
+    except Exception as e:
+        logging.warning(f"加载自定义HTML文件失败: {str(e)}")
+        return ""
+
 app = Flask(__name__)
 CORS(app)
 
@@ -46,8 +76,15 @@ CORS(app)
 devices = {}
 lock = threading.Lock()
 
-# HTML模板
-HTML_TEMPLATE = f'''
+# HTML模板（修改后的版本）
+def generate_html_template():
+    # 扩展代码加载动态内容
+    custom_css = load_custom_css(config.get("custom_css_file", ""))
+    custom_javascript = load_custom_javascript(config.get("custom_javascript_file", ""))
+    custom_html = load_custom_html(config.get("custom_html_file", ""))
+    
+    # HTML模板
+    HTML_TEMPLATE = f'''
 <!DOCTYPE html>
 <html>
 <head>
@@ -301,8 +338,7 @@ HTML_TEMPLATE = f'''
                 text-align: center;
             }}
         }}
-		{config['custom_css']}
-    </style>
+        {custom_css}
     </style>
     <link rel="icon" type="image/webp" href="{config['favicon_url']}">
 </head>
@@ -325,7 +361,7 @@ HTML_TEMPLATE = f'''
         <div id="device-container"></div>
         <div id="update-time">更新时间：暂无</div>
     </div>
-    <div class="copyright-container">{config['custom_footer_html']}
+    <div class="copyright-container">{custom_html}
         Copyright © 2025 <a href="https://github.com/Rise-forever/RStatus/" target="_blank">RStatus</a> Made By <a href="https://www.riseforever.cn/" target="_blank">Riseforever</a>.
     </div>
 <script>
@@ -380,12 +416,13 @@ HTML_TEMPLATE = f'''
 
     setInterval(updateDevices, 3000);
     updateDevices();
-	// 自定义Javascript
-	{config['custom_javascript']}
+    // 自定义Javascript
+    {custom_javascript}
 </script>
 </body>
 </html>
-'''
+    '''
+    return HTML_TEMPLATE
 
 def handle_tcp_connection():
     global devices
@@ -431,7 +468,7 @@ def handle_tcp_connection():
 
 @app.route('/')
 def home():
-    return render_template_string(HTML_TEMPLATE)
+    return render_template_string(generate_html_template())
 
 @app.route('/get_devices')
 def get_devices():

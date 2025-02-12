@@ -1,17 +1,17 @@
 {
     "avatar_url": "https://cravatar.cn/avatar/302380667bdaf4e1390800e62494d4af?s=400&d=mp",
     "nick_name": "Riseforever",
-    "tcp_port": 11451,
+    "tcp_port": 19198,
     "flask_port": 5000,
     "background_image": "https://www.riseforever.cn/wp-content/uploads/2025/01/6a22be2e4b3d370c76774ddaa58c0893.webp",
     "site_title": "Rsvの状态",
     "page_title": "捕捉Riseforever",
-    "online_status": "在线",
-    "offline_status": "离线",
-    "online_text": "当前在线，可通过任意方式联系到本人。",
-    "offline_text": "当前离线，有事请留言。",
+    "online_status": "在线中",
+    "offline_status": "下线了",
+    "online_text": "目前在线，可以交流。",
+    "offline_text": "目前离线，有事请留言。",
     "favicon_url": "https://www.riseforever.cn/wp-content/uploads/2024/12/65a799ce09060f728193a3146c6d0f15.webp",
-    "custom_css": "",
-    "custom_javascript": "",
-    "custom_footer_html": ""
+    "custom_css_file": "custom.css",
+    "custom_javascript_file": "custom.js",
+    "custom_html_file": "custom.html"
 }

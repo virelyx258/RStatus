@@ -1,7 +1,7 @@
 {
     "avatar_url": "https://example.com/avatar.jpg",
     "nick_name": "Custom Nickname",
-    "tcp_port": 19198,
+    "tcp_port": 8080,
     "flask_port": 5000,
     "background_image": "https://example.com/bg.jpg",
     "site_title": "Custom Site Title",
@@ -11,7 +11,7 @@
     "online_text": "Currently online, feel free to contact.",
     "offline_text": "Currently offline, please leave a message.",
     "favicon_url": "https://example.com/favicon.ico",
-    "custom_css": ".custom-class { color: red; }",
-    "custom_javascript": "console.log('Custom Javascript loaded');",
-    "custom_footer_html": ""
+    "custom_css_file": "",
+    "custom_javascript_file": "",
+    "custom_html_file": ""
 }
