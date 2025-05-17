@@ -13,5 +13,6 @@
     "favicon_url": "https://www.riseforever.cn/wp-content/uploads/2024/12/65a799ce09060f728193a3146c6d0f15.webp",
     "custom_css_file": "custom.css",
     "custom_javascript_file": "custom.js",
-    "custom_html_file": "custom.html"
+    "custom_html_file": "custom.html",
+	"enable_harassment": true
 }

@@ -13,5 +13,6 @@
     "favicon_url": "https://example.com/favicon.ico",
     "custom_css_file": "",
     "custom_javascript_file": "",
-    "custom_html_file": ""
+    "custom_html_file": "",
+	"enable_harassment": true
 }
