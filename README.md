@@ -31,7 +31,7 @@
 
 - 技术栈：`Python`、`易语言`
 - 关键词：`B/S`、`C/S`、`监控`
-- 支持的操作系统：WindowsXP以上（**客户端**）、Windows7以上（**服务器端**）
+- 支持的操作系统：WindowsNT 4.0 以上（**客户端**）、Windows7以上（**服务器端**）
 > [!WARNING]
 > 服务器端已测试环境为：
 > - Windows Server 2016
