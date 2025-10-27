@@ -72,7 +72,7 @@
 - [x] 支持自定义客户端名称
 
 ## 下载
-前往[Release](https://github.com/Rise-forever/RStatus/releases)页面进行下载。
+前往[Release](https://github.com/virelyx258/RStatus/releases)页面进行下载。
 
 ## 编译
 
