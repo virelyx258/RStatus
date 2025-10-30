@@ -1,39 +1,28 @@
-# RStatus
+# 
 
 <div align="center">
     <img width="100px" src="./Client/Icon.png" align="center" alt="RStatus" />
     <h2 align="center">RStatus</h2>
     <p align="center">一套适用于站长的活动公开系统。</p>
 </div>
-
 <div align="center">
-    <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/Rise-forever/RStatus?style=for-the-badge"> 
-    <img alt="GitHub" src="https://img.shields.io/github/license/Rise-forever/RStatus?style=for-the-badge"> 
-    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Rise-forever/RStatus?style=for-the-badge"> 
+    <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/virelyx258/RStatus?style=for-the-badge"> 
+    <img alt="GitHub" src="https://img.shields.io/github/license/virelyx258/RStatus?style=for-the-badge"> 
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/virelyx258/RStatus?style=for-the-badge"> 
 </div>
-
-> [!WARNING]
->
-> ## 以下留言致以来自中国大陆的开发者：
->
-> For English speakers, please ignore this message.
->
-> **请不要在 issues 板块下发表任何无意义且无法促进此项目持续发展的内容**。在提交 issue 之前，请仔细思考你要发布的内容**是否合理**，如果不能，请不要浪费其他人的时间；同时请考虑**开发者能否修复/实现**，如果不能，请自己提交 PR 而不是 issue。
-> 在交流时请尊重他人，不要使用不文明用语。请不要催促或强求开发者和其他贡献者，他们是一群热爱开源的志愿者，不是你的私人雇员！
->
-> 尽可能在除国内社交平台外的其他地方使用英语而不是中文，我们会优先处理英文内容。
 
 ## 简介
 > [!IMPORTANT]
-> 以下内容于2025年2月9日撰写，本软件的实际功能可能会因新版本推送而与简介有所差异。
+> 以下内容于2025年10月30日撰写，本软件的实际功能可能会因新版本推送而与简介有所差异。
 
-**RStatus**是一套网站系统，使用`易语言`与`Python`编写。其主要功能是将运行客户端的PC的`最前端活动窗口名`定时上传至服务器端，使客户能够通过浏览器来获取`活动名称`。
+**RStatus**是一套服务套件，使用`易语言`与`Python`编写。其主要功能是将运行客户端的PC的`最前端活动窗口名`定时上传至服务器端，使访客能够通过浏览器来获取`活动名称`，达到视奸的效果。
 
 - 技术栈：`Python`、`易语言`
 - 关键词：`B/S`、`C/S`、`监控`
 - 支持的操作系统：WindowsNT 4.0 以上（**客户端**）、Windows7以上（**服务器端**）
 > [!WARNING]
 > 服务器端已测试环境为：
+>
 > - Windows Server 2016
 > - IIS10.0
 > 其它环境暂未测试，可用性未知。
@@ -55,6 +44,7 @@
 - 站长 `在线状态` 判断&显示
 - 站长 `在线设备列表` 展示
 - 站长 `设备前端窗口名称` 展示
+- `API 接口` 支持
 
 ### 客户端
 - 上报时的 `设备名称` 修改
@@ -70,6 +60,7 @@
 - [x] 支持更换自定义端口
 - [x] 服务器端支持自定义头像、昵称
 - [x] 支持自定义客户端名称
+- [x] 支持 API 接口
 
 ## 下载
 前往[Release](https://github.com/virelyx258/RStatus/releases)页面进行下载。
@@ -83,9 +74,9 @@
 
 同时，该软件引用了 [精易模块](https://ec.125.la/)，请在编辑 / 引用代码时遵守相关协议。
 
-## 文档
+## 使用教程
 
-前往[文档](https://www.rsvsoft.cn/docs/rstatus/)页以查看部署教程及其它内容。
+待补档。
 
 ## 协议
 

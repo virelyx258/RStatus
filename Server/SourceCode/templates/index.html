@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ site_title }}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        html, body, * {
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url('{{ background_image }}') center/cover no-repeat;
+            margin: 0;
+            padding: 20px;
+            min-height: calc(100vh - 40px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container,
+        .copyright-container {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            transition: all 0.3s ease;
+        }
+
+        .container:hover,
+        .copyright-container:hover {
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #222;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        #window-title,
+        .info-module {
+            font-size: 1.2em;
+            color: #333;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(1px);
+            border-radius: 8px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+
+        #window-title:hover,
+        .info-module:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #window-title .left-label,
+        .info-module .left-label {
+            color: #222;
+        }
+
+        #window-title .right-content,
+        .info-module .right-content {
+            text-align: right;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #update-time {
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 5px;
+        }
+
+        .pinyin {
+            font-size: 0.6em;
+            position: absolute;
+            top: -0.8em;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #444;
+        }
+
+        .avatar-nickname {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            flex-grow: 1;
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .nickname-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-left: 10px;
+        }
+
+        .nickname {
+            font-size: 1.2em;
+            color: #222;
+        }
+
+        .sub-title {
+            font-size: 0.8em;
+            color: #444;
+            display: block;
+        }
+
+        .status-indicator {
+            padding: 5px 10px;
+            border-radius: 8px;
+            color: black;
+            background: rgba(246, 211, 101, 0.5);
+            border: 2px solid transparent;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .status-indicator:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .status-alive {
+            border-color: green;
+        }
+
+        .status-offline {
+            border-color: red;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+            display: inline-block;
+        }
+
+        .status-dot-alive {
+            background-color: green;
+        }
+
+        .status-dot-offline {
+            background-color: red;
+        }
+
+        #device-container {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+
+        #device-container:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #device-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #device-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+        }
+
+        #device-container::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        #device-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .copyright-container {
+            margin-top: 20px;
+        }
+
+        .copyright-container a {
+            color: #222;
+            text-decoration: none;
+        }
+
+        .copyright-container a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .container,
+            .copyright-container {
+                padding: 20px;
+            }
+
+            .info-module {
+                flex-direction: column;
+            }
+
+            .avatar-nickname {
+                flex-direction: column;
+                align-items: center;
+                margin-bottom: 10px;
+            }
+
+            .nickname-container {
+                align-items: center;
+                margin-left: 0;
+            }
+
+            .status-indicator {
+                margin-top: 10px;
+            }
+
+            #window-title,
+            .info-module {
+                flex-direction: column;
+            }
+
+            #window-title .left-label,
+            .info-module .left-label {
+                margin-bottom: 5px;
+            }
+
+            #window-title .right-content,
+            .info-module .right-content {
+                text-align: center;
+            }
+        }
+        {{ custom_css|safe }}
+    </style>
+    <link rel="icon" type="image/webp" href="{{ favicon_url }}">
+</head>
+<body>
+    <div class="container">
+        <h1>{{ page_title }}</h1>
+        <div class="info-module">
+            <div class="avatar-nickname">
+                <img class="avatar" src="{{ avatar_url }}" alt="Avatar">
+                <div class="nickname-container">
+                    <span class="nickname">{{ nick_name }}</span>
+                    <span class="sub-title" id="sub-title">{{ offline_text }}</span>
+                </div>
+            </div>
+            <div id="status-indicator" class="status-offline">
+                <div class="status-dot status-dot-offline"></div>
+                {{ offline_status }}
+            </div>
+        </div>
+        <div id="device-container"></div>
+        <div id="update-time">更新时间：暂无</div>
+    </div>
+    <div class="copyright-container">{{ custom_html|safe }}
+        Copyright © 2025 <a href="https://github.com/virelyx258/RStatus/" target="_blank">RStatus</a> Made By <a href="https://www.riseforever.cn/" target="_blank">RiseForever</a>.
+    </div>
+<script>
+    function updateDevices() {
+        fetch('/get_devices')
+           .then(response => {
+                if (!response.ok) throw new Error('Network error');
+                return response.json();
+            })
+           .then(data => {
+                const deviceContainer = document.getElementById('device-container');
+                deviceContainer.innerHTML = '';
+                for (const [deviceName, windowTitle] of Object.entries(data)) {
+                    const module = document.createElement('div');
+                    module.classList.add('info-module');
+                    module.innerHTML = `<span class="left-label">${deviceName}</span>
+                        <div class="right-content">
+                            <span onclick=\"showFullContent(this)\" 
+                                data-full-content=\"${windowTitle}\">${windowTitle.length > 20 ? windowTitle.substring(0,20)+'...' : windowTitle}</span>
+                        </div>`;
+                    deviceContainer.appendChild(module);
+                }
+
+                const now = new Date();
+                document.getElementById('update-time').innerText = `更新时间：${now.toLocaleString('zh-CN')}`;
+
+                const statusIndicator = document.getElementById('status-indicator');
+                const statusDot = document.querySelector('.status-dot');
+                const subTitle = document.getElementById('sub-title');
+                if (Object.keys(data).length > 0) {
+                    statusIndicator.className = 'status-indicator status-alive';
+                    statusDot.className = 'status-dot status-dot-alive';
+                    statusIndicator.innerHTML = `<div class=\"status-dot status-dot-alive\"></div>{{ online_status }}`;
+                    subTitle.innerText = '{{ online_text }}';
+                } else {
+                    statusIndicator.className = 'status-indicator status-offline';
+                    statusDot.className = 'status-dot status-dot-offline';
+                    statusIndicator.innerHTML = `<div class=\"status-dot status-dot-offline\"></div>{{ offline_status }}`;
+                    subTitle.innerText = '{{ offline_text }}';
+                }
+            })
+           .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('status-indicator').innerHTML = `<div class=\"status-dot status-dot-offline\"></div>{{ offline_status }}`;
+                document.getElementById('sub-title').innerText = '{{ offline_text }}';
+            });
+    }
+
+    function showFullContent(element) {
+        alert(element.dataset.fullContent);
+    }
+
+    setInterval(updateDevices, 3000);
+    updateDevices();
+    {{ custom_javascript|safe }}
+</script>
+    
+</body>
+</html>
+
+
